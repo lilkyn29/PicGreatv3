@@ -5,8 +5,8 @@ import { FILTERS, FilterDef, FilterCategory } from '../lib/filters';
 interface EditorState {
   canvas: fabric.Canvas | null;
   setCanvas: (canvas: fabric.Canvas) => void;
-  image: fabric.Image | fabric.Image | null;
-  setImage: (image: fabric.Image | fabric.Image | null) => void;
+  image: fabric.FabricImage | null;
+  setImage: (image: fabric.FabricImage | null) => void;
   mainImageId: string | null;
   setMainImageId: (id: string | null) => void;
   
@@ -22,9 +22,9 @@ interface EditorState {
   isComparing: boolean;
   toggleCompare: (value: boolean) => void;
   
-  images: fabric.Image[];
-  addImage: (image: fabric.Image) => void;
-  removeImage: (image: fabric.Image) => void;
+  images: fabric.FabricImage[];
+  addImage: (image: fabric.FabricImage) => void;
+  removeImage: (image: fabric.FabricImage) => void;
   
   isCropping: boolean;
   setIsCropping: (isCropping: boolean) => void;
@@ -74,6 +74,9 @@ interface EditorState {
   saveCustomFilter: (name: string) => void;
   applyAllFilters: () => void;
   debouncedApplyFilters: () => void;
+  clearCanvas: () => void;
+  resetToOriginal: () => void;
+  removeMainImage: () => void;
   // History
   history: any[];
   historyIndex: number;
@@ -119,16 +122,20 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     if (value && !isComparing) {
       // Show original
       const originalState = history[0].canvasState;
-      canvas.loadFromJSON(originalState, () => {
+      canvas.loadFromJSON(originalState).then(() => {
         canvas.renderAll();
         set({ isComparing: true });
+      }).catch(err => {
+        console.error('Compare Error (Original):', err);
       });
     } else if (!value && isComparing) {
       // Show current
       const currentState = history[historyIndex].canvasState;
-      canvas.loadFromJSON(currentState, () => {
+      canvas.loadFromJSON(currentState).then(() => {
         canvas.renderAll();
         set({ isComparing: false });
+      }).catch(err => {
+        console.error('Compare Error (Current):', err);
       });
     }
   },
@@ -339,6 +346,82 @@ export const useEditorStore = create<EditorState>((set, get) => ({
     };
   })(),
 
+  clearCanvas: () => {
+    const { canvas } = get();
+    if (!canvas) return;
+
+    canvas.clear();
+    canvas.set('backgroundColor', 'transparent');
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    canvas.renderAll();
+
+    set({
+      image: null,
+      mainImageId: null,
+      brightness: 0,
+      contrast: 0,
+      saturation: 0,
+      hue: 0,
+      exposure: 0,
+      shadows: 0,
+      highlights: 0,
+      warmth: 0,
+      vignette: 0,
+      grain: 0,
+      dehaze: 0,
+      vibrance: 0,
+      activeFilter: null,
+      filterIntensity: 1,
+      isCanvasEmpty: true,
+      selectedObject: null,
+      isDrawing: false,
+      isErasing: false,
+      isCropping: false,
+      videoElement: null,
+      isPlaying: false,
+      currentTime: 0,
+      history: [],
+      historyIndex: -1,
+      activeTab: 'adjust',
+      images: [],
+    });
+  },
+  
+  resetToOriginal: () => {
+    const { history, jumpToHistory } = get();
+    if (history.length > 0) {
+      jumpToHistory(0);
+    }
+  },
+
+  removeMainImage: () => {
+    const { canvas, image } = get();
+    if (canvas && image) {
+      canvas.remove(image);
+      canvas.discardActiveObject();
+      canvas.requestRenderAll();
+      set({
+        image: null,
+        mainImageId: null,
+        brightness: 0,
+        contrast: 0,
+        saturation: 0,
+        hue: 0,
+        exposure: 0,
+        shadows: 0,
+        highlights: 0,
+        warmth: 0,
+        vignette: 0,
+        grain: 0,
+        dehaze: 0,
+        vibrance: 0,
+        activeFilter: null,
+        filterIntensity: 1,
+      });
+      get().saveHistory();
+    }
+  },
+
   history: [],
   historyIndex: -1,
   isCanvasEmpty: true,
@@ -397,15 +480,17 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       const isCanvasEmpty = objects.length === 0;
       
       // Try to recover the active image reference
-      const activeObject = canvas.getActiveObject() as fabric.Image;
+      const activeObject = canvas.getActiveObject() as fabric.FabricImage;
       
       set({
         ...prevState.adjustments,
         historyIndex: newIndex,
         isCanvasEmpty,
-        image: activeObject && activeObject instanceof fabric.Image ? activeObject : null
+        image: activeObject && activeObject instanceof fabric.FabricImage ? activeObject : null
       });
       canvas.renderAll();
+    }).catch(err => {
+      console.error('Undo Error:', err);
     });
   },
   redo: () => {
@@ -419,15 +504,17 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       const objects = canvas.getObjects();
       const isCanvasEmpty = objects.length === 0;
       
-      const activeObject = canvas.getActiveObject() as fabric.Image;
+      const activeObject = canvas.getActiveObject() as fabric.FabricImage;
 
       set({
         ...nextState.adjustments,
         historyIndex: newIndex,
         isCanvasEmpty,
-        image: activeObject && activeObject instanceof fabric.Image ? activeObject : null
+        image: activeObject && activeObject instanceof fabric.FabricImage ? activeObject : null
       });
       canvas.renderAll();
+    }).catch(err => {
+      console.error('Redo Error:', err);
     });
   },
   jumpToHistory: (index: number) => {
@@ -439,15 +526,17 @@ export const useEditorStore = create<EditorState>((set, get) => ({
       const objects = canvas.getObjects();
       const isCanvasEmpty = objects.length === 0;
       
-      const activeObject = canvas.getActiveObject() as fabric.Image;
+      const activeObject = canvas.getActiveObject() as fabric.FabricImage;
 
       set({
         ...targetState.adjustments,
         historyIndex: index,
         isCanvasEmpty,
-        image: activeObject && activeObject instanceof fabric.Image ? activeObject : null
+        image: activeObject && activeObject instanceof fabric.FabricImage ? activeObject : null
       });
       canvas.renderAll();
+    }).catch(err => {
+      console.error('Jump to History Error:', err);
     });
   }
 }));

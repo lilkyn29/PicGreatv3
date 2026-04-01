@@ -20,10 +20,14 @@ export function StickerPanel() {
       const url = `https://tenor.googleapis.com/v2/${endpoint}?q=${query}&key=${TENOR_API_KEY}&client_key=picgreat&limit=20&contentfilter=medium&media_filter=minimal${type === 'stickers' ? '&searchfilter=sticker' : ''}`;
       
       const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Tenor API error: ${response.status} ${response.statusText}`);
+      }
       const data = await response.json();
       setResults(data.results || []);
     } catch (error) {
       console.error('Tenor API Error:', error);
+      setResults([]);
     } finally {
       setLoading(false);
     }
@@ -39,7 +43,7 @@ export function StickerPanel() {
   const addSticker = (url: string) => {
     if (!canvas) return;
 
-    fabric.Image.fromURL(url, { crossOrigin: 'anonymous' }).then((img) => {
+    fabric.FabricImage.fromURL(url, { crossOrigin: 'anonymous' }).then((img) => {
       const scale = Math.min(
         (canvas.width! * 0.3) / img.width!,
         (canvas.height! * 0.3) / img.height!
@@ -66,6 +70,8 @@ export function StickerPanel() {
       setImage(img);
       canvas.requestRenderAll();
       useEditorStore.getState().saveHistory();
+    }).catch(err => {
+      console.error('Error loading sticker:', err);
     });
   };
 

@@ -18,6 +18,25 @@ export function VideoPanel() {
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (!canvas || !videoElement || !isPlaying) return;
+
+    let animId: number;
+    const render = () => {
+      canvas.renderAll();
+      setCurrentTime(videoElement.currentTime);
+      animId = fabric.util.requestAnimFrame(render);
+    };
+
+    animId = fabric.util.requestAnimFrame(render);
+
+    return () => {
+      if (animId) {
+        fabric.util.cancelAnimFrame(animId);
+      }
+    };
+  }, [canvas, videoElement, isPlaying, setCurrentTime]);
+
   const handleVideoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !canvas) return;
@@ -30,7 +49,7 @@ export function VideoPanel() {
     video.muted = true;
 
     video.onloadedmetadata = () => {
-      const fabricVideo = new fabric.Image(video, {
+      const fabricVideo = new fabric.FabricImage(video, {
         left: canvas.width! / 2,
         top: canvas.height! / 2,
         originX: 'center',
@@ -51,14 +70,8 @@ export function VideoPanel() {
       useEditorStore.getState().setVideoElement(video);
       useEditorStore.getState().setDuration(video.duration);
       
-      video.play();
+      video.play().catch(err => console.error('Autoplay prevented or video play error:', err));
       setIsPlaying(true);
-      
-      fabric.util.requestAnimFrame(function render() {
-        canvas.renderAll();
-        setCurrentTime(video.currentTime);
-        fabric.util.requestAnimFrame(render);
-      });
     };
   };
 
@@ -67,7 +80,7 @@ export function VideoPanel() {
     if (isPlaying) {
       videoElement.pause();
     } else {
-      videoElement.play();
+      videoElement.play().catch(err => console.error('Video play error:', err));
     }
     setIsPlaying(!isPlaying);
   };

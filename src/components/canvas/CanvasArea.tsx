@@ -6,7 +6,10 @@ import { motion } from 'motion/react';
 
 // Disable WebGL for filters to ensure custom 2D filters work correctly
 // This fixes the issue where some presets cause the image to turn black
-fabric.setFilterBackend(new fabric.Canvas2dFilterBackend());
+if (typeof fabric.setFilterBackend === 'function') {
+  // @ts-ignore
+  fabric.setFilterBackend(new fabric.Canvas2dFilterBackend());
+}
 
 export function CanvasArea() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -121,13 +124,13 @@ export function CanvasArea() {
 
     // Sync selection with store
     initCanvas.on('selection:created', (e) => {
-      if (e.selected?.[0] instanceof fabric.Image) {
+      if (e.selected?.[0] instanceof fabric.FabricImage) {
         setImage(e.selected[0]);
       }
     });
 
     initCanvas.on('selection:updated', (e) => {
-      if (e.selected?.[0] instanceof fabric.Image) {
+      if (e.selected?.[0] instanceof fabric.FabricImage) {
         setImage(e.selected[0]);
       }
     });
@@ -135,7 +138,7 @@ export function CanvasArea() {
     initCanvas.on('selection:cleared', () => {
       const objects = initCanvas.getObjects();
       // @ts-ignore
-      const mainImg = objects.find(obj => obj.isMainImage) as fabric.Image;
+      const mainImg = objects.find(obj => obj.isMainImage) as fabric.FabricImage;
       if (mainImg) {
         setImage(mainImg);
       }
@@ -172,15 +175,19 @@ export function CanvasArea() {
 
     // Zoom and Pan
     initCanvas.on('mouse:wheel', function(opt) {
-      const e = opt.e as WheelEvent;
-      const delta = e.deltaY;
-      let zoom = initCanvas.getZoom();
-      zoom *= 0.999 ** delta;
-      if (zoom > 20) zoom = 20;
-      if (zoom < 0.1) zoom = 0.1;
-      initCanvas.zoomToPoint(new fabric.Point(e.offsetX, e.offsetY), zoom);
-      e.preventDefault();
-      e.stopPropagation();
+      try {
+        const e = opt.e as WheelEvent;
+        const delta = e.deltaY;
+        let zoom = initCanvas.getZoom();
+        zoom *= 0.999 ** delta;
+        if (zoom > 20) zoom = 20;
+        if (zoom < 0.1) zoom = 0.1;
+        initCanvas.zoomToPoint(new fabric.Point(e.offsetX, e.offsetY), zoom);
+        e.preventDefault();
+        e.stopPropagation();
+      } catch (err) {
+        console.error('Zoom Error:', err);
+      }
     });
 
     let isDragging = false;
@@ -267,7 +274,7 @@ export function CanvasArea() {
     };
   }, []);
 
-  const centerImage = (img: fabric.Image, c: fabric.Canvas) => {
+  const centerImage = (img: fabric.FabricImage, c: fabric.Canvas) => {
     const scale = Math.min(
       (c.width! * 0.9) / img.width!,
       (c.height! * 0.9) / img.height!
@@ -296,7 +303,7 @@ export function CanvasArea() {
       const data = f.target?.result;
       if (typeof data !== 'string') return;
 
-      fabric.Image.fromURL(data).then((img) => {
+      fabric.FabricImage.fromURL(data).then((img) => {
         img.set({
           selectable: true,
           evented: true,
@@ -313,8 +320,11 @@ export function CanvasArea() {
         
         centerImage(img, canvas);
         canvas.add(img);
+        canvas.moveObjectTo(img, 0);
         canvas.setActiveObject(img);
         setImage(img);
+      }).catch(err => {
+        console.error('Error loading image:', err);
       });
     };
     reader.readAsDataURL(file);
@@ -376,7 +386,7 @@ export function CanvasArea() {
         ))}
       </div>
 
-      {isCanvasEmpty && (
+      {!image && (
         <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
           <div className="bg-editor-sidebar/80 backdrop-blur-xl p-12 rounded-3xl border border-editor-border flex flex-col items-center gap-6 pointer-events-auto shadow-2xl shadow-black/50 relative overflow-hidden">
             {/* Festive Background Decorations */}

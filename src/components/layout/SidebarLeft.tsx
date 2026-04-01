@@ -54,7 +54,7 @@ export function SidebarLeft() {
       reader.onload = (f) => {
         const data = f.target?.result;
         if (typeof data !== 'string') return;
-        fabric.Image.fromURL(data).then((img) => {
+        fabric.FabricImage.fromURL(data).then((img) => {
           img.set({
             selectable: true,
             evented: true,
@@ -77,9 +77,12 @@ export function SidebarLeft() {
             originY: 'center',
           });
           canvas.add(img);
+          canvas.moveObjectTo(img, 0);
           canvas.setActiveObject(img);
           useEditorStore.getState().setImage(img);
           canvas.requestRenderAll();
+        }).catch(err => {
+          console.error('Error adding image:', err);
         });
       };
       reader.readAsDataURL(file);
@@ -326,14 +329,7 @@ export function SidebarLeft() {
                       Back
                     </button>
                     <button
-                      onClick={() => {
-                        if (image && canvas) {
-                          canvas.remove(image);
-                          canvas.discardActiveObject();
-                          canvas.requestRenderAll();
-                          useEditorStore.getState().setImage(null);
-                        }
-                      }}
+                      onClick={() => useEditorStore.getState().removeMainImage()}
                       disabled={!image}
                       className={`tool-button ${image ? 'tool-button-inactive text-red-400 hover:text-red-300' : 'opacity-30 cursor-not-allowed'}`}
                     >

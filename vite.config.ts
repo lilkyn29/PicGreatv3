@@ -6,7 +6,6 @@ import {defineConfig, loadEnv} from 'vite';
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
-    base: '/PicGreatv3/',
     plugins: [react(), tailwindcss()],
     define: {},
     resolve: {

@@ -1,7 +1,8 @@
 import * as fabric from 'fabric';
+import { filters as fabricFilters } from 'fabric';
 
 // Gradient Map Filter
-export class GradientMapFilter extends fabric.filters.BaseFilter<any, any, any> {
+export class GradientMapFilter extends fabricFilters.BaseFilter<any, any, any> {
   static type = 'GradientMap';
   colors: string[];
 
@@ -33,9 +34,11 @@ export class GradientMapFilter extends fabric.filters.BaseFilter<any, any, any> 
   }
 
   private hexToRgb(hex: string) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
+    if (!hex || typeof hex !== 'string') return { r: 0, g: 0, b: 0 };
+    const h = hex.startsWith('#') ? hex.slice(1) : hex;
+    const r = parseInt(h.slice(0, 2), 16) || 0;
+    const g = parseInt(h.slice(2, 4), 16) || 0;
+    const b = parseInt(h.slice(4, 6), 16) || 0;
     return { r, g, b };
   }
 
@@ -52,7 +55,7 @@ export class GradientMapFilter extends fabric.filters.BaseFilter<any, any, any> 
 }
 
 // Split Toning Filter
-export class SplitToningFilter extends fabric.filters.BaseFilter<any, any, any> {
+export class SplitToningFilter extends fabricFilters.BaseFilter<any, any, any> {
   static type = 'SplitToning';
   shadows: string;
   highlights: string;
@@ -87,9 +90,11 @@ export class SplitToningFilter extends fabric.filters.BaseFilter<any, any, any> 
   }
 
   private hexToRgb(hex: string) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
+    if (!hex || typeof hex !== 'string') return { r: 0, g: 0, b: 0 };
+    const h = hex.startsWith('#') ? hex.slice(1) : hex;
+    const r = parseInt(h.slice(0, 2), 16) || 0;
+    const g = parseInt(h.slice(2, 4), 16) || 0;
+    const b = parseInt(h.slice(4, 6), 16) || 0;
     return { r, g, b };
   }
 
@@ -107,7 +112,7 @@ export class SplitToningFilter extends fabric.filters.BaseFilter<any, any, any> 
 }
 
 // Pixelate Filter
-export class PixelateFilter extends fabric.filters.BaseFilter<any, any, any> {
+export class PixelateFilter extends fabricFilters.BaseFilter<any, any, any> {
   static type = 'Pixelate';
   blockSize: number;
 
@@ -157,7 +162,7 @@ export class PixelateFilter extends fabric.filters.BaseFilter<any, any, any> {
 }
 
 // Chromatic Aberration Filter
-export class ChromaticAberrationFilter extends fabric.filters.BaseFilter<any, any, any> {
+export class ChromaticAberrationFilter extends fabricFilters.BaseFilter<any, any, any> {
   static type = 'ChromaticAberration';
   offset: number;
 
@@ -208,7 +213,7 @@ export class ChromaticAberrationFilter extends fabric.filters.BaseFilter<any, an
 }
 
 // Duotone Filter
-export class DuotoneFilter extends fabric.filters.BaseFilter<any, any, any> {
+export class DuotoneFilter extends fabricFilters.BaseFilter<any, any, any> {
   static type = 'Duotone';
   light: string;
   dark: string;
@@ -239,9 +244,11 @@ export class DuotoneFilter extends fabric.filters.BaseFilter<any, any, any> {
   }
 
   private hexToRgb(hex: string) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
+    if (!hex || typeof hex !== 'string') return { r: 0, g: 0, b: 0 };
+    const h = hex.startsWith('#') ? hex.slice(1) : hex;
+    const r = parseInt(h.slice(0, 2), 16) || 0;
+    const g = parseInt(h.slice(2, 4), 16) || 0;
+    const b = parseInt(h.slice(4, 6), 16) || 0;
     return { r, g, b };
   }
 
@@ -259,7 +266,7 @@ export class DuotoneFilter extends fabric.filters.BaseFilter<any, any, any> {
 }
 
 // Pop Art Filter (4-quadrant duotone)
-export class PopArtFilter extends fabric.filters.BaseFilter<any, any, any> {
+export class PopArtFilter extends fabricFilters.BaseFilter<any, any, any> {
   static type = 'PopArt';
 
   applyTo2d(options: { canvasEl: HTMLCanvasElement; ctx: CanvasRenderingContext2D; imageData: ImageData }) {
@@ -310,7 +317,7 @@ export class PopArtFilter extends fabric.filters.BaseFilter<any, any, any> {
 }
 
 // Halftone Filter
-export class HalftoneFilter extends fabric.filters.BaseFilter<any, any, any> {
+export class HalftoneFilter extends fabricFilters.BaseFilter<any, any, any> {
   static type = 'Halftone';
   size: number;
 
@@ -377,7 +384,7 @@ export class HalftoneFilter extends fabric.filters.BaseFilter<any, any, any> {
 }
 
 // Vignette Filter
-export class VignetteFilter extends fabric.filters.BaseFilter<any, any, any> {
+export class VignetteFilter extends fabricFilters.BaseFilter<any, any, any> {
   static type = 'Vignette';
   amount: number;
 
@@ -424,7 +431,7 @@ export class VignetteFilter extends fabric.filters.BaseFilter<any, any, any> {
 }
 
 // Glitch Filter
-export class GlitchFilter extends fabric.filters.BaseFilter<any, any, any> {
+export class GlitchFilter extends fabricFilters.BaseFilter<any, any, any> {
   static type = 'Glitch';
   amount: number;
 
@@ -478,7 +485,7 @@ export class GlitchFilter extends fabric.filters.BaseFilter<any, any, any> {
 }
 
 // Bloom Filter (Simplified)
-export class BloomFilter extends fabric.filters.BaseFilter<any, any, any> {
+export class BloomFilter extends fabricFilters.BaseFilter<any, any, any> {
   static type = 'Bloom';
   threshold: number;
   amount: number;
@@ -526,24 +533,17 @@ export class BloomFilter extends fabric.filters.BaseFilter<any, any, any> {
 
 // Register filters
 const registerFilter = (name: string, filterClass: any) => {
-  // Add to fabric.filters for backward compatibility and to avoid "not extensible" errors
-  // if we can't use classRegistry
+  // Add to fabric.filters for backward compatibility
   try {
     (fabric.filters as any)[name] = filterClass;
   } catch (e) {
-    console.warn(`Could not add ${name} to fabric.filters:`, e);
+    // Ignore errors if fabric.filters is not extensible
   }
 
-  // Use classRegistry for Fabric v6+
-  const registry = (fabric as any).classRegistry;
-  if (registry) {
-    if (typeof registry.register === 'function') {
-      registry.register(filterClass);
-    } else if (typeof registry.setClass === 'function') {
-      registry.setClass(name, filterClass);
-    } else if (typeof registry.add === 'function') {
-      registry.add(filterClass);
-    }
+  // Register in classRegistry for Fabric v7
+  const registry = fabric.classRegistry as any;
+  if (registry && typeof registry.register === 'function') {
+    registry.register(filterClass);
   }
 };
 

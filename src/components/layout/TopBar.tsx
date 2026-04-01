@@ -7,7 +7,7 @@ import { ChristmasLights } from './ChristmasLights';
 export function TopBar() {
   const { 
     canvas, image, setImage, undo, redo, historyIndex, history, videoElement,
-    isComparing, toggleCompare 
+    isComparing, toggleCompare, clearCanvas 
   } = useEditorStore();
   const [showExportModal, setShowExportModal] = useState(false);
   const [exportType, setExportType] = useState<'image' | 'video'>('image');
@@ -44,14 +44,41 @@ export function TopBar() {
 
   const handleVideoExport = async () => {
     if (!canvas || !videoElement) return;
+    
+    const canvasEl = canvas.getElement() as any;
+    if (!canvasEl.captureStream) {
+      alert('Your browser does not support canvas recording (captureStream missing).');
+      return;
+    }
+
     setIsExporting(true);
     setExportProgress(0);
 
     try {
-      const stream = (canvas.getElement() as any).captureStream(30);
+      const stream = canvasEl.captureStream(30);
+      
+      const supportedTypes = [
+        'video/webm;codecs=vp9',
+        'video/webm;codecs=vp8',
+        'video/webm',
+        'video/mp4'
+      ];
+      
+      let mimeType = '';
+      for (const type of supportedTypes) {
+        if (MediaRecorder.isTypeSupported(type)) {
+          mimeType = type;
+          break;
+        }
+      }
+
+      if (!mimeType) {
+        throw new Error('No supported MediaRecorder mimeType found.');
+      }
+
       const recorder = new MediaRecorder(stream, {
-        mimeType: 'video/webm;codecs=vp9',
-        videoBitsPerSecond: exportQuality * 5000000 // Up to 5Mbps
+        mimeType,
+        videoBitsPerSecond: exportQuality * 5000000
       });
 
       const chunks: Blob[] = [];
@@ -69,7 +96,7 @@ export function TopBar() {
 
       // Start recording
       videoElement.currentTime = 0;
-      videoElement.play();
+      videoElement.play().catch(err => console.error('Video play error during export:', err));
       recorder.start();
 
       const duration = videoElement.duration;
@@ -91,11 +118,8 @@ export function TopBar() {
   };
 
   const handleClear = () => {
-    if (!canvas) return;
-    canvas.clear();
-    canvas.backgroundColor = '#0a0a0a';
-    setImage(null);
-    useEditorStore.getState().setVideoElement(null);
+    const { removeMainImage } = useEditorStore.getState();
+    removeMainImage();
   };
 
   // Generate more snowflakes for a heavier snow effect
@@ -212,7 +236,7 @@ export function TopBar() {
           onClick={handleClear}
           disabled={!image && !videoElement}
           className="p-2 text-red-400 hover:text-red-300 hover:bg-red-400/10 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          title="Clear Canvas"
+          title="Delete and Upload New Photo"
         >
           <Trash2 className="w-5 h-5" />
         </button>
