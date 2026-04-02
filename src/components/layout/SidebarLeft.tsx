@@ -177,7 +177,7 @@ export function SidebarLeft() {
   }));
 
   return (
-    <div className="w-72 bg-editor-sidebar border-r border-editor-border flex flex-col h-full text-neutral-200 relative overflow-hidden">
+    <div className="w-72 bg-bg-panel border-r border-border flex flex-col h-full text-text-primary relative overflow-hidden">
       {/* Winter Background Effect */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-900/5 via-transparent to-blue-900/5 pointer-events-none" />
       
@@ -209,12 +209,12 @@ export function SidebarLeft() {
         ))}
       </div>
 
-      <div className="flex border-b border-editor-border relative z-10 overflow-x-auto custom-scrollbar">
+      <div className="flex border-b border-border relative z-10 overflow-x-auto custom-scrollbar">
         {(['adjust', 'filters', 'stickers', 'text', 'draw', 'shapes', 'video'] as const).map((tab) => (
           <button
             key={tab}
             className={`min-w-[70px] flex-1 py-3 text-[9px] uppercase tracking-widest font-bold flex flex-col items-center justify-center gap-1.5 transition-all relative ${
-              activeTab === tab ? 'text-white' : 'text-neutral-500 hover:text-neutral-300'
+              activeTab === tab ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'
             }`}
             onClick={() => setActiveTab(tab)}
           >
@@ -252,7 +252,7 @@ export function SidebarLeft() {
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     <h3 className="sidebar-section-title">Transformation</h3>
-                    <button onClick={handleReset} className="text-[10px] uppercase tracking-wider text-neutral-500 hover:text-white flex items-center gap-1.5 transition-colors">
+                    <button onClick={handleReset} className="text-[10px] uppercase tracking-wider text-text-muted hover:text-text-primary flex items-center gap-1.5 transition-colors">
                       <RefreshCcw className="w-3 h-3" /> Reset
                     </button>
                   </div>
@@ -355,8 +355,8 @@ export function SidebarLeft() {
                     ].map((adj) => (
                       <div key={adj.key} className="space-y-3">
                         <div className="flex justify-between text-[11px] font-medium">
-                          <span className="text-neutral-500 uppercase tracking-wider">{adj.label}</span>
-                          <span className="text-white font-mono">{Math.round((useEditorStore.getState() as any)[adj.key] * 100)}</span>
+                          <span className="text-text-muted uppercase tracking-wider">{adj.label}</span>
+                          <span className="text-text-primary font-mono">{Math.round((useEditorStore.getState() as any)[adj.key] * 100)}</span>
                         </div>
                         <input
                           type="range"
@@ -367,14 +367,14 @@ export function SidebarLeft() {
                           onChange={(e) => setAdjustment(adj.key as any, parseFloat(e.target.value))}
                           onMouseUp={() => useEditorStore.getState().saveHistory()}
                           onTouchEnd={() => useEditorStore.getState().saveHistory()}
-                          className="w-full h-1 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-editor-accent"
+                          className="w-full h-1 bg-bg-surface-hover rounded-lg appearance-none cursor-pointer accent-editor-accent"
                           disabled={!image}
                         />
                       </div>
                     ))}
 
-                    <div className="pt-4 border-t border-editor-border space-y-6">
-                      <h4 className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Lightroom Effects</h4>
+                    <div className="pt-4 border-t border-border space-y-6">
+                      <h4 className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Lightroom Effects</h4>
                       
                       {[
                         { label: 'Vignette', key: 'vignette', min: 0, max: 1 },
@@ -384,8 +384,8 @@ export function SidebarLeft() {
                       ].map((adj) => (
                         <div key={adj.key} className="space-y-3">
                           <div className="flex justify-between text-[11px] font-medium">
-                            <span className="text-neutral-500 uppercase tracking-wider">{adj.label}</span>
-                            <span className="text-white font-mono">{Math.round((useEditorStore.getState() as any)[adj.key] * 100)}</span>
+                            <span className="text-text-muted uppercase tracking-wider">{adj.label}</span>
+                            <span className="text-text-primary font-mono">{Math.round((useEditorStore.getState() as any)[adj.key] * 100)}</span>
                           </div>
                           <input
                             type="range"
@@ -396,7 +396,7 @@ export function SidebarLeft() {
                             onChange={(e) => setAdjustment(adj.key as any, parseFloat(e.target.value))}
                             onMouseUp={() => useEditorStore.getState().saveHistory()}
                             onTouchEnd={() => useEditorStore.getState().saveHistory()}
-                            className="w-full h-1 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-editor-accent"
+                            className="w-full h-1 bg-bg-surface-hover rounded-lg appearance-none cursor-pointer accent-editor-accent"
                             disabled={!image}
                           />
                         </div>
@@ -409,11 +409,11 @@ export function SidebarLeft() {
 
             {activeTab === 'filters' && (
               <div className="flex flex-col items-center justify-center h-full text-center px-4">
-                <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-4">
-                  <ImageIcon className="w-6 h-6 text-neutral-600" />
+                <div className="w-12 h-12 bg-bg-surface rounded-full flex items-center justify-center mb-4">
+                  <ImageIcon className="w-6 h-6 text-text-muted" />
                 </div>
-                <h4 className="text-sm font-medium text-white mb-2">Filter Library</h4>
-                <p className="text-xs text-neutral-500 leading-relaxed">
+                <h4 className="text-sm font-medium text-text-primary mb-2">Filter Library</h4>
+                <p className="text-xs text-text-muted leading-relaxed">
                   Select and customize professional filters from the right panel to transform your image.
                 </p>
               </div>
@@ -423,13 +423,13 @@ export function SidebarLeft() {
               <div className="space-y-6">
                 <h3 className="sidebar-section-title">Add Text</h3>
                 <div className="space-y-3">
-                  <button onClick={() => handleAddText('heading')} className="w-full py-4 bg-white/5 hover:bg-white/10 border border-editor-border rounded-xl text-2xl font-bold text-white transition-colors">
+                  <button onClick={() => handleAddText('heading')} className="w-full py-4 bg-bg-surface hover:bg-bg-surface-hover border border-border rounded-xl text-2xl font-bold text-text-primary transition-colors">
                     Add Heading
                   </button>
-                  <button onClick={() => handleAddText('subheading')} className="w-full py-3 bg-white/5 hover:bg-white/10 border border-editor-border rounded-xl text-xl font-semibold text-white transition-colors">
+                  <button onClick={() => handleAddText('subheading')} className="w-full py-3 bg-bg-surface hover:bg-bg-surface-hover border border-border rounded-xl text-xl font-semibold text-text-primary transition-colors">
                     Add Subheading
                   </button>
-                  <button onClick={() => handleAddText('body')} className="w-full py-2 bg-white/5 hover:bg-white/10 border border-editor-border rounded-xl text-sm text-white transition-colors">
+                  <button onClick={() => handleAddText('body')} className="w-full py-2 bg-bg-surface hover:bg-bg-surface-hover border border-border rounded-xl text-sm text-text-primary transition-colors">
                     Add body text
                   </button>
                 </div>
@@ -446,7 +446,7 @@ export function SidebarLeft() {
                     className={`w-full py-3 rounded-xl border font-bold text-[11px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
                       useEditorStore.getState().isDrawing && !useEditorStore.getState().isErasing
                         ? 'bg-editor-accent text-white border-editor-accent shadow-lg shadow-editor-accent/20' 
-                        : 'bg-white/5 text-neutral-400 border-editor-border hover:bg-white/10 hover:text-white'
+                        : 'bg-bg-surface text-text-muted border-border hover:bg-bg-surface-hover hover:text-text-primary'
                     }`}
                   >
                     <PenTool size={16} />
@@ -458,7 +458,7 @@ export function SidebarLeft() {
                     className={`w-full py-3 rounded-xl border font-bold text-[11px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
                       useEditorStore.getState().isErasing 
                         ? 'bg-editor-accent text-white border-editor-accent shadow-lg shadow-editor-accent/20' 
-                        : 'bg-white/5 text-neutral-400 border-editor-border hover:bg-white/10 hover:text-white'
+                        : 'bg-bg-surface text-text-muted border-border hover:bg-bg-surface-hover hover:text-text-primary'
                     }`}
                   >
                     <Eraser size={16} />
@@ -466,11 +466,11 @@ export function SidebarLeft() {
                   </button>
                 </div>
 
-                <div className="space-y-6 pt-6 border-t border-editor-border">
+                <div className="space-y-6 pt-6 border-t border-border">
                   <div className="space-y-3">
                     <div className="flex justify-between text-[11px] font-medium">
-                      <span className="text-neutral-500 uppercase tracking-wider">Brush Size</span>
-                      <span className="text-white font-mono">{useEditorStore.getState().brushSize}px</span>
+                      <span className="text-text-muted uppercase tracking-wider">Brush Size</span>
+                      <span className="text-text-primary font-mono">{useEditorStore.getState().brushSize}px</span>
                     </div>
                     <input
                       type="range"
@@ -478,12 +478,12 @@ export function SidebarLeft() {
                       max="100"
                       value={useEditorStore.getState().brushSize}
                       onChange={(e) => useEditorStore.getState().setBrushSize(parseInt(e.target.value))}
-                      className="w-full h-1 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-editor-accent"
+                      className="w-full h-1 bg-bg-surface-hover rounded-lg appearance-none cursor-pointer accent-editor-accent"
                     />
                   </div>
 
                   <div className={`space-y-3 ${useEditorStore.getState().isErasing ? 'opacity-50 pointer-events-none' : ''}`}>
-                    <span className="text-neutral-500 text-[11px] font-medium uppercase tracking-wider">Brush Color</span>
+                    <span className="text-text-muted text-[11px] font-medium uppercase tracking-wider">Brush Color</span>
                     <div className="grid grid-cols-5 gap-2">
                       {['#ffffff', '#000000', '#ff4d4d', '#4ade80', '#60a5fa', '#facc15', '#c084fc', '#f472b6', '#2dd4bf', '#fb923c'].map(color => (
                         <button
@@ -505,15 +505,15 @@ export function SidebarLeft() {
               <div className="space-y-6">
                 <h3 className="sidebar-section-title">Add Shapes</h3>
                 <div className="grid grid-cols-3 gap-3">
-                  <button onClick={() => handleAddShape('rect')} className="aspect-square flex flex-col items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-editor-border rounded-xl text-white transition-colors">
+                  <button onClick={() => handleAddShape('rect')} className="aspect-square flex flex-col items-center justify-center gap-2 bg-bg-surface hover:bg-bg-surface-hover border border-border rounded-xl text-text-primary transition-colors">
                     <Square size={24} />
                     <span className="text-[10px] uppercase tracking-wider">Rect</span>
                   </button>
-                  <button onClick={() => handleAddShape('circle')} className="aspect-square flex flex-col items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-editor-border rounded-xl text-white transition-colors">
+                  <button onClick={() => handleAddShape('circle')} className="aspect-square flex flex-col items-center justify-center gap-2 bg-bg-surface hover:bg-bg-surface-hover border border-border rounded-xl text-text-primary transition-colors">
                     <Circle size={24} />
                     <span className="text-[10px] uppercase tracking-wider">Circle</span>
                   </button>
-                  <button onClick={() => handleAddShape('triangle')} className="aspect-square flex flex-col items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-editor-border rounded-xl text-white transition-colors">
+                  <button onClick={() => handleAddShape('triangle')} className="aspect-square flex flex-col items-center justify-center gap-2 bg-bg-surface hover:bg-bg-surface-hover border border-border rounded-xl text-text-primary transition-colors">
                     <Triangle size={24} />
                     <span className="text-[10px] uppercase tracking-wider">Triangle</span>
                   </button>
@@ -539,10 +539,10 @@ export function SidebarLeft() {
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
-            className="absolute bottom-0 left-0 right-0 bg-editor-bg border-t border-editor-border p-4 max-h-[40vh] overflow-y-auto z-20"
+            className="absolute bottom-0 left-0 right-0 bg-bg-main border-t border-border p-4 max-h-[40vh] overflow-y-auto z-20"
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xs font-bold text-white uppercase tracking-widest flex items-center gap-2">
+              <h3 className="text-xs font-bold text-text-primary uppercase tracking-widest flex items-center gap-2">
                 <Palette size={14} /> Object Properties
               </h3>
             </div>
@@ -550,11 +550,11 @@ export function SidebarLeft() {
             <div className="space-y-4">
               {/* Blending Mode */}
               <div className="space-y-2">
-                <span className="text-[10px] font-medium text-neutral-400 uppercase">Blend Mode</span>
+                <span className="text-[10px] font-medium text-text-muted uppercase">Blend Mode</span>
                 <select
                   value={selectedObject.globalCompositeOperation || 'source-over'}
                   onChange={(e) => updateSelectedObject({ globalCompositeOperation: e.target.value })}
-                  className="w-full bg-black/20 border border-editor-border rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-editor-accent transition-colors"
+                  className="w-full bg-bg-surface border border-border rounded-lg px-3 py-2 text-xs text-text-primary outline-none focus:border-editor-accent transition-colors"
                 >
                   <option value="source-over">Normal</option>
                   <option value="multiply">Multiply</option>
@@ -577,7 +577,7 @@ export function SidebarLeft() {
 
               {/* Opacity */}
               <div className="space-y-2">
-                <div className="flex justify-between text-[10px] font-medium text-neutral-400 uppercase">
+                <div className="flex justify-between text-[10px] font-medium text-text-muted uppercase">
                   <span>Opacity</span>
                   <span>{Math.round((selectedObject.opacity || 1) * 100)}%</span>
                 </div>
@@ -588,17 +588,17 @@ export function SidebarLeft() {
                   step="0.01"
                   value={selectedObject.opacity || 1}
                   onChange={(e) => updateSelectedObject({ opacity: parseFloat(e.target.value) })}
-                  className="w-full h-1 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-editor-accent"
+                  className="w-full h-1 bg-bg-surface-hover rounded-lg appearance-none cursor-pointer accent-editor-accent"
                 />
               </div>
 
               {/* Text Properties */}
               {selectedObject.type === 'i-text' && (
-                <div className="space-y-4 pt-2 border-t border-editor-border/50">
-                  <span className="text-[10px] font-medium text-neutral-400 uppercase">Text Settings</span>
+                <div className="space-y-4 pt-2 border-t border-border/50">
+                  <span className="text-[10px] font-medium text-text-muted uppercase">Text Settings</span>
                   
                   <div className="space-y-2">
-                    <div className="flex justify-between text-[10px] font-medium text-neutral-400 uppercase">
+                    <div className="flex justify-between text-[10px] font-medium text-text-muted uppercase">
                       <span>Font Size</span>
                       <span>{(selectedObject as any).fontSize || 24}px</span>
                     </div>
@@ -608,17 +608,17 @@ export function SidebarLeft() {
                       max="200"
                       value={(selectedObject as any).fontSize || 24}
                       onChange={(e) => updateSelectedObject({ fontSize: parseInt(e.target.value) })}
-                      className="w-full h-1 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-editor-accent"
+                      className="w-full h-1 bg-bg-surface-hover rounded-lg appearance-none cursor-pointer accent-editor-accent"
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-2">
-                      <span className="text-[10px] font-medium text-neutral-400 uppercase">Weight</span>
+                      <span className="text-[10px] font-medium text-text-muted uppercase">Weight</span>
                       <select
                         value={(selectedObject as any).fontWeight || 'normal'}
                         onChange={(e) => updateSelectedObject({ fontWeight: e.target.value })}
-                        className="w-full bg-black/20 border border-editor-border rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-editor-accent transition-colors"
+                        className="w-full bg-bg-surface border border-border rounded-lg px-3 py-2 text-xs text-text-primary outline-none focus:border-editor-accent transition-colors"
                       >
                         <option value="normal">Normal</option>
                         <option value="bold">Bold</option>
@@ -629,11 +629,11 @@ export function SidebarLeft() {
                       </select>
                     </div>
                     <div className="space-y-2">
-                      <span className="text-[10px] font-medium text-neutral-400 uppercase">Align</span>
+                      <span className="text-[10px] font-medium text-text-muted uppercase">Align</span>
                       <select
                         value={(selectedObject as any).textAlign || 'left'}
                         onChange={(e) => updateSelectedObject({ textAlign: e.target.value })}
-                        className="w-full bg-black/20 border border-editor-border rounded-lg px-3 py-2 text-xs text-white outline-none focus:border-editor-accent transition-colors"
+                        className="w-full bg-bg-surface border border-border rounded-lg px-3 py-2 text-xs text-text-primary outline-none focus:border-editor-accent transition-colors"
                       >
                         <option value="left">Left</option>
                         <option value="center">Center</option>
@@ -648,7 +648,7 @@ export function SidebarLeft() {
               {/* Fill Color */}
               {(selectedObject.type === 'rect' || selectedObject.type === 'circle' || selectedObject.type === 'triangle' || selectedObject.type === 'i-text') && (
                 <div className="space-y-2">
-                  <span className="text-[10px] font-medium text-neutral-400 uppercase">Fill Color</span>
+                  <span className="text-[10px] font-medium text-text-muted uppercase">Fill Color</span>
                   <div className="flex gap-2">
                     <input
                       type="color"
@@ -661,7 +661,7 @@ export function SidebarLeft() {
                         <button
                           key={color}
                           onClick={() => updateSelectedObject({ fill: color })}
-                          className="w-full aspect-square rounded border border-editor-border relative overflow-hidden"
+                          className="w-full aspect-square rounded border border-border relative overflow-hidden"
                           style={{ backgroundColor: color === 'transparent' ? '#222' : color }}
                         >
                           {color === 'transparent' && <div className="absolute inset-0 flex items-center justify-center text-[8px] text-white/50">NONE</div>}
@@ -675,7 +675,7 @@ export function SidebarLeft() {
               {/* Stroke */}
               {(selectedObject.type === 'rect' || selectedObject.type === 'circle' || selectedObject.type === 'triangle' || selectedObject.type === 'i-text') && (
                 <div className="space-y-2">
-                  <div className="flex justify-between text-[10px] font-medium text-neutral-400 uppercase">
+                  <div className="flex justify-between text-[10px] font-medium text-text-muted uppercase">
                     <span>Stroke Width</span>
                     <span>{selectedObject.strokeWidth || 0}px</span>
                   </div>
@@ -685,7 +685,7 @@ export function SidebarLeft() {
                     max="50"
                     value={selectedObject.strokeWidth || 0}
                     onChange={(e) => updateSelectedObject({ strokeWidth: parseInt(e.target.value) })}
-                    className="w-full h-1 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-editor-accent"
+                    className="w-full h-1 bg-bg-surface-hover rounded-lg appearance-none cursor-pointer accent-editor-accent"
                   />
                   <div className="flex gap-2 mt-2">
                     <input
@@ -700,7 +700,7 @@ export function SidebarLeft() {
 
               {/* Shadow */}
               <div className="space-y-2">
-                <div className="flex justify-between text-[10px] font-medium text-neutral-400 uppercase">
+                <div className="flex justify-between text-[10px] font-medium text-text-muted uppercase">
                   <span>Shadow Blur</span>
                   <span>{((selectedObject.shadow as fabric.Shadow)?.blur) || 0}px</span>
                 </div>
@@ -721,17 +721,17 @@ export function SidebarLeft() {
                       })
                     });
                   }}
-                  className="w-full h-1 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-editor-accent"
+                  className="w-full h-1 bg-bg-surface-hover rounded-lg appearance-none cursor-pointer accent-editor-accent"
                 />
               </div>
               
               {/* Blending Mode */}
               <div className="space-y-2">
-                <span className="text-[10px] font-medium text-neutral-400 uppercase">Blend Mode</span>
+                <span className="text-[10px] font-medium text-text-muted uppercase">Blend Mode</span>
                 <select 
                   value={selectedObject.globalCompositeOperation || 'source-over'}
                   onChange={(e) => updateSelectedObject({ globalCompositeOperation: e.target.value })}
-                  className="w-full bg-neutral-900 border border-editor-border rounded-lg p-2 text-xs text-white outline-none focus:border-editor-accent"
+                  className="w-full bg-bg-surface border border-border rounded-lg p-2 text-xs text-text-primary outline-none focus:border-editor-accent"
                 >
                   <option value="source-over">Normal</option>
                   <option value="multiply">Multiply</option>

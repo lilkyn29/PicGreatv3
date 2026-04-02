@@ -30,9 +30,9 @@ export default function App() {
   }, [undo, redo]);
 
   return (
-    <div className="h-screen w-full flex flex-col bg-neutral-950 text-white overflow-hidden font-sans selection:bg-red-500/30">
+    <div className="h-screen w-full flex flex-col bg-bg-main text-text-primary overflow-hidden font-sans selection:bg-editor-accent/30">
       <TopBar />
-      <div className="flex-1 flex overflow-hidden border-t border-green-900/50">
+      <div className="flex-1 flex overflow-hidden border-t border-border">
         <SidebarLeft />
         <CanvasArea />
         <SidebarRight />

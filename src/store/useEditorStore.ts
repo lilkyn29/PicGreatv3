@@ -77,6 +77,10 @@ interface EditorState {
   clearCanvas: () => void;
   resetToOriginal: () => void;
   removeMainImage: () => void;
+  // Theme State
+  theme: 'dark' | 'light';
+  toggleTheme: () => void;
+
   // History
   history: any[];
   historyIndex: number;
@@ -419,6 +423,17 @@ export const useEditorStore = create<EditorState>((set, get) => ({
         filterIntensity: 1,
       });
       get().saveHistory();
+    }
+  },
+
+  theme: 'dark',
+  toggleTheme: () => {
+    const newTheme = get().theme === 'dark' ? 'light' : 'dark';
+    set({ theme: newTheme });
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
     }
   },
 

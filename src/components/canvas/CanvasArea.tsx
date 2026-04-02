@@ -354,7 +354,7 @@ export function CanvasArea() {
   return (
     <div 
       ref={containerRef} 
-      className="flex-1 relative bg-editor-bg overflow-hidden flex items-center justify-center"
+      className="flex-1 relative bg-bg-main overflow-hidden flex items-center justify-center"
       onDragOver={handleDragOver}
       onDrop={handleDrop}
     >
@@ -388,7 +388,7 @@ export function CanvasArea() {
 
       {!image && (
         <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
-          <div className="bg-editor-sidebar/80 backdrop-blur-xl p-12 rounded-3xl border border-editor-border flex flex-col items-center gap-6 pointer-events-auto shadow-2xl shadow-black/50 relative overflow-hidden">
+          <div className="bg-bg-panel/80 backdrop-blur-xl p-12 rounded-3xl border border-border flex flex-col items-center gap-6 pointer-events-auto shadow-2xl shadow-black/50 relative overflow-hidden">
             {/* Festive Background Decorations */}
             <div className="absolute -top-4 -right-4 text-blue-400/20 rotate-12">
               <Snowflake size={64} />
@@ -414,12 +414,12 @@ export function CanvasArea() {
             </div>
 
             <div className="text-center">
-              <h3 className="text-xl font-bold text-white tracking-tight flex items-center justify-center gap-2">
+              <h3 className="text-xl font-bold text-text-primary tracking-tight flex items-center justify-center gap-2">
                 <TreePine className="text-editor-accent-green w-5 h-5" />
                 Import Photo
                 <TreePine className="text-editor-accent-green w-5 h-5" />
               </h3>
-              <p className="text-sm text-neutral-500 mt-2 max-w-[200px]">Drag and drop your image here or browse your files</p>
+              <p className="text-sm text-text-muted mt-2 max-w-[200px]">Drag and drop your image here or browse your files</p>
             </div>
             <label className="mt-4 px-8 py-3 bg-editor-accent hover:bg-red-600 text-white rounded-xl font-bold text-xs uppercase tracking-widest cursor-pointer transition-all shadow-lg shadow-editor-accent/20 flex items-center gap-2">
               <TreePine size={14} />
@@ -431,17 +431,17 @@ export function CanvasArea() {
       )}
       <canvas ref={canvasRef} />
       {image && (
-        <div className="absolute bottom-6 right-6 bg-editor-sidebar/80 backdrop-blur text-[10px] uppercase tracking-widest font-bold text-neutral-500 px-4 py-2.5 rounded-xl border border-editor-border pointer-events-none flex items-center gap-3">
+        <div className="absolute bottom-6 right-6 bg-bg-panel/80 backdrop-blur text-[10px] uppercase tracking-widest font-bold text-text-muted px-4 py-2.5 rounded-xl border border-border pointer-events-none flex items-center gap-3">
           <span className="flex items-center gap-1.5"><span className="w-1 h-1 bg-editor-accent rounded-full" /> Scroll to zoom</span>
-          <span className="w-px h-3 bg-editor-border" />
+          <span className="w-px h-3 bg-border" />
           <span className="flex items-center gap-1.5"><span className="w-1 h-1 bg-editor-accent-green rounded-full" /> Alt+Drag to pan</span>
         </div>
       )}
       {isCropping && (
-        <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-editor-sidebar/90 backdrop-blur-xl px-6 py-4 rounded-2xl border border-editor-accent flex items-center gap-6 shadow-2xl">
+        <div className="absolute top-6 left-1/2 -translate-x-1/2 bg-bg-panel/90 backdrop-blur-xl px-6 py-4 rounded-2xl border border-editor-accent flex items-center gap-6 shadow-2xl">
           <div className="flex flex-col">
             <span className="text-[10px] uppercase tracking-widest font-bold text-editor-accent">Crop Mode</span>
-            <span className="text-xs text-neutral-400">Adjust the box to crop your image</span>
+            <span className="text-xs text-text-muted">Adjust the box to crop your image</span>
           </div>
           <button
             onClick={applyCrop}

@@ -122,16 +122,16 @@ export function LayersPanel() {
             className={`group flex items-center gap-3 p-2 rounded-lg border transition-all ${
               isSelected 
                 ? 'bg-editor-accent/10 border-editor-accent' 
-                : 'bg-white/5 border-transparent hover:border-white/10'
+                : 'bg-bg-surface border-transparent hover:border-border'
             }`}
             onClick={() => selectLayer(obj)}
           >
-            <div className={`p-1.5 rounded bg-black/40 ${isSelected ? 'text-editor-accent' : 'text-neutral-500'}`}>
+            <div className={`p-1.5 rounded bg-bg-surface ${isSelected ? 'text-editor-accent' : 'text-text-muted'}`}>
               {getLayerIcon(obj.type, obj)}
             </div>
 
             <div className="flex-1 min-w-0">
-              <p className={`text-[11px] font-bold truncate ${isSelected ? 'text-white' : 'text-neutral-400'}`}>
+              <p className={`text-[11px] font-bold truncate ${isSelected ? 'text-text-primary' : 'text-text-muted'}`}>
                 {getLayerName(obj)}
               </p>
             </div>
@@ -139,14 +139,14 @@ export function LayersPanel() {
             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
               <button
                 onClick={(e) => { e.stopPropagation(); toggleVisibility(obj); }}
-                className={`p-1 hover:bg-white/10 rounded transition-colors ${!isVisible ? 'text-red-400' : 'text-neutral-500'}`}
+                className={`p-1 hover:bg-bg-surface-hover rounded transition-colors ${!isVisible ? 'text-red-400' : 'text-text-muted'}`}
                 title={isVisible ? 'Hide' : 'Show'}
               >
                 {isVisible ? <Eye size={12} /> : <EyeOff size={12} />}
               </button>
               <button
                 onClick={(e) => { e.stopPropagation(); toggleLock(obj); }}
-                className={`p-1 hover:bg-white/10 rounded transition-colors ${isLocked ? 'text-yellow-400' : 'text-neutral-500'}`}
+                className={`p-1 hover:bg-bg-surface-hover rounded transition-colors ${isLocked ? 'text-yellow-400' : 'text-text-muted'}`}
                 title={isLocked ? 'Unlock' : 'Lock'}
               >
                 {isLocked ? <Lock size={12} /> : <Unlock size={12} />}
@@ -154,20 +154,20 @@ export function LayersPanel() {
               <div className="flex flex-col">
                 <button
                   onClick={(e) => { e.stopPropagation(); moveUp(obj); }}
-                  className="p-0.5 hover:bg-white/10 rounded text-neutral-500"
+                  className="p-0.5 hover:bg-bg-surface-hover rounded text-text-muted"
                 >
                   <ChevronUp size={10} />
                 </button>
                 <button
                   onClick={(e) => { e.stopPropagation(); moveDown(obj); }}
-                  className="p-0.5 hover:bg-white/10 rounded text-neutral-500"
+                  className="p-0.5 hover:bg-bg-surface-hover rounded text-text-muted"
                 >
                   <ChevronDown size={10} />
                 </button>
               </div>
               <button
                 onClick={(e) => { e.stopPropagation(); deleteLayer(obj); }}
-                className="p-1 hover:bg-red-500/20 hover:text-red-400 rounded text-neutral-500 transition-colors"
+                className="p-1 hover:bg-red-500/20 hover:text-red-400 rounded text-text-muted transition-colors"
                 title="Delete"
               >
                 <Trash2 size={12} />

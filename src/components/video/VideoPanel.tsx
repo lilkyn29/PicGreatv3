@@ -102,12 +102,12 @@ export function VideoPanel() {
         {!videoElement ? (
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="w-full py-8 border-2 border-dashed border-editor-border rounded-2xl flex flex-col items-center justify-center gap-3 hover:border-editor-accent hover:bg-editor-accent/5 transition-all group"
+            className="w-full py-8 border-2 border-dashed border-border rounded-2xl flex flex-col items-center justify-center gap-3 hover:border-editor-accent hover:bg-editor-accent/5 transition-all group"
           >
             <div className="w-12 h-12 bg-editor-accent/10 rounded-full flex items-center justify-center text-editor-accent group-hover:scale-110 transition-transform">
               <Video size={24} />
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Upload Video</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Upload Video</span>
             <input
               type="file"
               ref={fileInputRef}
@@ -117,9 +117,9 @@ export function VideoPanel() {
             />
           </button>
         ) : (
-          <div className="space-y-4 bg-black/40 p-4 rounded-2xl border border-editor-border">
+          <div className="space-y-4 bg-bg-surface p-4 rounded-2xl border border-border">
             <div className="flex items-center justify-center gap-6">
-              <button className="text-neutral-500 hover:text-white transition-colors">
+              <button className="text-text-muted hover:text-text-primary transition-colors">
                 <SkipBack size={20} />
               </button>
               <button
@@ -128,7 +128,7 @@ export function VideoPanel() {
               >
                 {isPlaying ? <Pause size={24} /> : <Play size={24} className="ml-1" />}
               </button>
-              <button className="text-neutral-500 hover:text-white transition-colors">
+              <button className="text-text-muted hover:text-text-primary transition-colors">
                 <SkipForward size={20} />
               </button>
             </div>
@@ -141,9 +141,9 @@ export function VideoPanel() {
                 step="0.01"
                 value={currentTime}
                 onChange={handleSeek}
-                className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-editor-accent"
+                className="w-full h-1.5 bg-bg-surface-hover rounded-lg appearance-none cursor-pointer accent-editor-accent"
               />
-              <div className="flex justify-between text-[10px] font-mono text-neutral-500">
+              <div className="flex justify-between text-[10px] font-mono text-text-muted">
                 <span>{currentTime.toFixed(2)}s</span>
                 <span>{duration.toFixed(2)}s</span>
               </div>
@@ -158,7 +158,7 @@ export function VideoPanel() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="grid grid-cols-2 gap-3 pt-4 border-t border-editor-border"
+            className="grid grid-cols-2 gap-3 pt-4 border-t border-border"
           >
             <button 
               onClick={() => {
@@ -171,12 +171,12 @@ export function VideoPanel() {
                   canvas.requestRenderAll();
                 }
               }}
-              className="flex items-center justify-center gap-2 py-3 bg-white/5 border border-editor-border rounded-xl text-[10px] font-bold uppercase tracking-widest text-neutral-400 hover:text-white hover:bg-white/10 transition-all"
+              className="flex items-center justify-center gap-2 py-3 bg-bg-surface border border-border rounded-xl text-[10px] font-bold uppercase tracking-widest text-text-muted hover:text-text-primary hover:bg-bg-surface-hover transition-all"
             >
               <Trash2 size={14} />
               Remove
             </button>
-            <button className="flex items-center justify-center gap-2 py-3 bg-white/5 border border-editor-border rounded-xl text-[10px] font-bold uppercase tracking-widest text-neutral-400 hover:text-white hover:bg-white/10 transition-all">
+            <button className="flex items-center justify-center gap-2 py-3 bg-bg-surface border border-border rounded-xl text-[10px] font-bold uppercase tracking-widest text-text-muted hover:text-text-primary hover:bg-bg-surface-hover transition-all">
               <Download size={14} />
               Export
             </button>

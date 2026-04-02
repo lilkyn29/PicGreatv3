@@ -1,13 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { useEditorStore } from '../../store/useEditorStore';
-import { Undo2, Redo2, Download, Trash2, Snowflake, Settings, X, Image as ImageIcon, Film, Loader2, Check, Eye } from 'lucide-react';
+import { Undo2, Redo2, Download, Trash2, Snowflake, Settings, X, Image as ImageIcon, Film, Loader2, Check, Eye, Sun, Moon } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChristmasLights } from './ChristmasLights';
 
 export function TopBar() {
   const { 
     canvas, image, setImage, undo, redo, historyIndex, history, videoElement,
-    isComparing, toggleCompare, clearCanvas 
+    isComparing, toggleCompare, clearCanvas, theme, toggleTheme 
   } = useEditorStore();
   const [showExportModal, setShowExportModal] = useState(false);
   const [exportType, setExportType] = useState<'image' | 'video'>('image');
@@ -132,7 +132,7 @@ export function TopBar() {
   }));
 
   return (
-    <div className="h-14 bg-editor-sidebar border-b border-editor-border flex items-center justify-between px-6 relative overflow-hidden">
+    <div className="h-14 bg-bg-panel border-b border-border flex items-center justify-between px-6 relative overflow-hidden">
       <ChristmasLights />
       {/* Winter Background Effect */}
       <div className="absolute inset-0 bg-gradient-to-r from-blue-900/10 via-transparent to-blue-900/10 pointer-events-none" />
@@ -175,7 +175,7 @@ export function TopBar() {
           >
             P
           </motion.div>
-          <h1 className="text-lg font-bold tracking-tight text-white flex items-center gap-1">
+          <h1 className="text-lg font-bold tracking-tight text-text-primary flex items-center gap-1">
             PicGreat<span className="text-editor-accent">LK</span>
             <motion.span
               animate={{ rotate: [0, 360] }}
@@ -186,7 +186,7 @@ export function TopBar() {
             </motion.span>
           </h1>
         </div>
-        <div className="h-4 w-px bg-editor-border" />
+        <div className="h-4 w-px bg-border" />
         <motion.span 
           animate={{ opacity: [0.5, 1, 0.5] }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -198,9 +198,19 @@ export function TopBar() {
 
       <div className="flex items-center gap-2 relative z-10">
         <button
+          onClick={toggleTheme}
+          className="p-2 text-text-muted hover:text-text-primary hover:bg-bg-surface rounded-lg transition-colors"
+          title="Toggle Theme"
+        >
+          {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
+
+        <div className="w-px h-6 bg-border mx-1" />
+
+        <button
           onClick={undo}
           disabled={!image || historyIndex <= 0}
-          className="p-2 text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="p-2 text-text-muted hover:text-text-primary hover:bg-bg-surface-hover rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           title="Undo"
         >
           <Undo2 className="w-5 h-5" />
@@ -208,13 +218,13 @@ export function TopBar() {
         <button
           onClick={redo}
           disabled={!image || historyIndex >= history.length - 1}
-          className="p-2 text-neutral-400 hover:text-white hover:bg-neutral-800 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="p-2 text-text-muted hover:text-text-primary hover:bg-bg-surface-hover rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           title="Redo"
         >
           <Redo2 className="w-5 h-5" />
         </button>
 
-        <div className="w-px h-6 bg-neutral-800 mx-1" />
+        <div className="w-px h-6 bg-border mx-1" />
 
         <button
           onMouseDown={() => toggleCompare(true)}
@@ -222,7 +232,7 @@ export function TopBar() {
           onMouseLeave={() => isComparing && toggleCompare(false)}
           disabled={!image || history.length < 2}
           className={`p-2 rounded-lg transition-all flex items-center gap-2 ${
-            isComparing ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
+            isComparing ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' : 'text-text-muted hover:text-text-primary hover:bg-bg-surface-hover'
           } disabled:opacity-50 disabled:cursor-not-allowed`}
           title="Hold to Compare (Before/After)"
         >
@@ -230,7 +240,7 @@ export function TopBar() {
           <span className="text-[10px] font-bold uppercase tracking-widest hidden sm:inline">Compare</span>
         </button>
         
-        <div className="w-px h-6 bg-neutral-800 mx-2" />
+        <div className="w-px h-6 bg-border mx-2" />
         
         <button
           onClick={handleClear}
@@ -266,22 +276,22 @@ export function TopBar() {
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="relative w-full max-w-md bg-editor-sidebar border border-editor-border rounded-3xl shadow-2xl overflow-hidden"
+              className="relative w-full max-w-md bg-bg-panel border border-border rounded-3xl shadow-2xl overflow-hidden"
             >
-              <div className="p-6 border-b border-editor-border flex items-center justify-between">
+              <div className="p-6 border-b border-border flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400">
                     <Download size={20} />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-white">Export Settings</h2>
-                    <p className="text-[10px] text-neutral-500 uppercase tracking-widest">Custom Quality & Format</p>
+                    <h2 className="text-lg font-bold text-text-primary">Export Settings</h2>
+                    <p className="text-[10px] text-text-muted uppercase tracking-widest">Custom Quality & Format</p>
                   </div>
                 </div>
                 {!isExporting && (
                   <button 
                     onClick={() => setShowExportModal(false)}
-                    className="p-2 text-neutral-500 hover:text-white transition-colors"
+                    className="p-2 text-text-muted hover:text-text-primary transition-colors"
                   >
                     <X size={20} />
                   </button>
@@ -290,11 +300,11 @@ export function TopBar() {
 
               <div className="p-6 space-y-6">
                 {/* Export Type Toggle */}
-                <div className="flex p-1 bg-black/40 rounded-xl border border-editor-border">
+                <div className="flex p-1 bg-bg-surface rounded-xl border border-border">
                   <button
                     onClick={() => setExportType('image')}
                     className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${
-                      exportType === 'image' ? 'bg-blue-600 text-white shadow-lg' : 'text-neutral-500 hover:text-neutral-300'
+                      exportType === 'image' ? 'bg-blue-600 text-white shadow-lg' : 'text-text-muted hover:text-text-primary'
                     }`}
                   >
                     <ImageIcon size={14} />
@@ -304,7 +314,7 @@ export function TopBar() {
                     onClick={() => setExportType('video')}
                     disabled={!videoElement}
                     className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${
-                      exportType === 'video' ? 'bg-blue-600 text-white shadow-lg' : 'text-neutral-500 hover:text-neutral-300 disabled:opacity-30'
+                      exportType === 'video' ? 'bg-blue-600 text-white shadow-lg' : 'text-text-muted hover:text-text-primary disabled:opacity-30'
                     }`}
                   >
                     <Film size={14} />
@@ -315,14 +325,14 @@ export function TopBar() {
                 {exportType === 'image' ? (
                   <div className="space-y-6">
                     <div className="space-y-3">
-                      <label className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">Format</label>
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-text-muted">Format</label>
                       <div className="grid grid-cols-3 gap-2">
                         {['png', 'jpeg', 'webp'].map((f) => (
                           <button
                             key={f}
                             onClick={() => setExportFormat(f)}
                             className={`py-2 rounded-lg border text-[10px] font-bold uppercase tracking-widest transition-all ${
-                              exportFormat === f ? 'border-blue-500 bg-blue-500/10 text-blue-400' : 'border-editor-border bg-black/20 text-neutral-500 hover:border-neutral-700'
+                              exportFormat === f ? 'border-blue-500 bg-blue-500/10 text-blue-400' : 'border-border bg-bg-surface text-text-muted hover:border-text-muted'
                             }`}
                           >
                             {f}
@@ -333,7 +343,7 @@ export function TopBar() {
 
                     <div className="space-y-3">
                       <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
-                        <span className="text-neutral-500">Resolution (Multiplier)</span>
+                        <span className="text-text-muted">Resolution (Multiplier)</span>
                         <span className="text-blue-400">{exportMultiplier}x</span>
                       </div>
                       <div className="grid grid-cols-3 gap-2">
@@ -342,7 +352,7 @@ export function TopBar() {
                             key={m}
                             onClick={() => setExportMultiplier(m)}
                             className={`py-2 rounded-lg border text-[10px] font-bold uppercase tracking-widest transition-all ${
-                              exportMultiplier === m ? 'border-blue-500 bg-blue-500/10 text-blue-400' : 'border-editor-border bg-black/20 text-neutral-500 hover:border-neutral-700'
+                              exportMultiplier === m ? 'border-blue-500 bg-blue-500/10 text-blue-400' : 'border-border bg-bg-surface text-text-muted hover:border-text-muted'
                             }`}
                           >
                             {m}x
@@ -354,7 +364,7 @@ export function TopBar() {
                     {exportFormat !== 'png' && (
                       <div className="space-y-3">
                         <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
-                          <span className="text-neutral-500">Quality</span>
+                          <span className="text-text-muted">Quality</span>
                           <span className="text-blue-400">{Math.round(exportQuality * 100)}%</span>
                         </div>
                         <input
@@ -364,7 +374,7 @@ export function TopBar() {
                           step="0.05"
                           value={exportQuality}
                           onChange={(e) => setExportQuality(parseFloat(e.target.value))}
-                          className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                          className="w-full h-1.5 bg-bg-surface-hover rounded-lg appearance-none cursor-pointer accent-blue-600"
                         />
                       </div>
                     )}
@@ -378,7 +388,7 @@ export function TopBar() {
                     </div>
                     <div className="space-y-3">
                       <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
-                        <span className="text-neutral-500">Video Bitrate (Quality)</span>
+                        <span className="text-text-muted">Video Bitrate (Quality)</span>
                         <span className="text-blue-400">{Math.round(exportQuality * 100)}%</span>
                       </div>
                       <input
@@ -388,16 +398,16 @@ export function TopBar() {
                         step="0.05"
                         value={exportQuality}
                         onChange={(e) => setExportQuality(parseFloat(e.target.value))}
-                        className="w-full h-1.5 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                        className="w-full h-1.5 bg-bg-surface-hover rounded-lg appearance-none cursor-pointer accent-blue-600"
                       />
                     </div>
                     {isExporting && (
                       <div className="space-y-2">
                         <div className="flex justify-between text-[10px] font-bold uppercase tracking-widest">
-                          <span className="text-neutral-500">Recording Progress</span>
+                          <span className="text-text-muted">Recording Progress</span>
                           <span className="text-blue-400">{Math.round(exportProgress)}%</span>
                         </div>
-                        <div className="w-full h-1.5 bg-neutral-800 rounded-full overflow-hidden">
+                        <div className="w-full h-1.5 bg-bg-surface-hover rounded-full overflow-hidden">
                           <motion.div 
                             className="h-full bg-blue-600"
                             initial={{ width: 0 }}
@@ -410,7 +420,7 @@ export function TopBar() {
                 )}
               </div>
 
-              <div className="p-6 bg-black/20 border-t border-editor-border">
+              <div className="p-6 bg-bg-surface border-t border-border">
                 <button
                   onClick={exportType === 'image' ? handleImageExport : handleVideoExport}
                   disabled={isExporting}

@@ -79,11 +79,11 @@ export function StickerPanel() {
     <div className="flex flex-col h-full space-y-6">
       <div className="flex items-center justify-between">
         <h3 className="sidebar-section-title">Stickers & GIFs</h3>
-        <div className="flex bg-black/40 rounded-lg p-1 border border-editor-border relative">
+        <div className="flex bg-bg-surface rounded-lg p-1 border border-border relative">
           <button
             onClick={() => setType('stickers')}
             className={`px-3 py-1 text-[10px] uppercase tracking-wider font-bold rounded-md transition-all relative z-10 ${
-              type === 'stickers' ? 'text-white' : 'text-neutral-500 hover:text-neutral-300'
+              type === 'stickers' ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'
             }`}
           >
             Stickers
@@ -98,7 +98,7 @@ export function StickerPanel() {
           <button
             onClick={() => setType('gifs')}
             className={`px-3 py-1 text-[10px] uppercase tracking-wider font-bold rounded-md transition-all relative z-10 ${
-              type === 'gifs' ? 'text-white' : 'text-neutral-500 hover:text-neutral-300'
+              type === 'gifs' ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'
             }`}
           >
             GIFs
@@ -114,13 +114,13 @@ export function StickerPanel() {
       </div>
 
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={`Search Google ${type === 'stickers' ? 'Stickers' : 'GIFs'}...`}
-          className="w-full bg-black/40 border border-editor-border rounded-xl pl-10 pr-10 py-2.5 text-sm text-white focus:outline-none focus:border-editor-accent transition-colors"
+          className="w-full bg-bg-surface border border-border rounded-xl pl-10 pr-10 py-2.5 text-sm text-text-primary focus:outline-none focus:border-editor-accent transition-colors"
         />
         <AnimatePresence>
           {search && (
@@ -129,9 +129,9 @@ export function StickerPanel() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               onClick={() => setSearch('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-white/10 rounded-full transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-bg-surface-hover rounded-full transition-colors"
             >
-              <X className="w-3 h-3 text-neutral-500" />
+              <X className="w-3 h-3 text-text-muted" />
             </motion.button>
           )}
         </AnimatePresence>
@@ -141,7 +141,7 @@ export function StickerPanel() {
         <button
           onClick={() => setSearch('Christmas')}
           className={`flex-1 py-2 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
-            search === 'Christmas' ? 'bg-red-500/20 border-red-500 text-red-400' : 'bg-black/20 border-editor-border text-neutral-500 hover:border-neutral-700'
+            search === 'Christmas' ? 'bg-red-500/20 border-red-500 text-red-400' : 'bg-bg-surface border-border text-text-muted hover:border-text-muted'
           }`}
         >
           <Snowflake size={12} />
@@ -150,7 +150,7 @@ export function StickerPanel() {
         <button
           onClick={() => setSearch('Santa')}
           className={`flex-1 py-2 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
-            search === 'Santa' ? 'bg-green-500/20 border-green-500 text-green-400' : 'bg-black/20 border-editor-border text-neutral-500 hover:border-neutral-700'
+            search === 'Santa' ? 'bg-green-500/20 border-green-500 text-green-400' : 'bg-bg-surface border-border text-text-muted hover:border-text-muted'
           }`}
         >
           <Sparkles size={12} />
@@ -159,7 +159,7 @@ export function StickerPanel() {
         <button
           onClick={() => setSearch('Reindeer')}
           className={`flex-1 py-2 rounded-xl border text-[10px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
-            search === 'Reindeer' ? 'bg-orange-500/20 border-orange-500 text-orange-400' : 'bg-black/20 border-editor-border text-neutral-500 hover:border-neutral-700'
+            search === 'Reindeer' ? 'bg-orange-500/20 border-orange-500 text-orange-400' : 'bg-bg-surface border-border text-text-muted hover:border-text-muted'
           }`}
         >
           <TreePine size={12} />
@@ -175,7 +175,7 @@ export function StickerPanel() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex flex-col items-center justify-center h-40 text-neutral-500 gap-3"
+              className="flex flex-col items-center justify-center h-40 text-text-muted gap-3"
             >
               <Loader2 className="w-6 h-6 animate-spin text-editor-accent" />
               <span className="text-[10px] uppercase tracking-widest font-bold">Searching Tenor...</span>
@@ -195,7 +195,7 @@ export function StickerPanel() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.05 }}
                   onClick={() => addSticker(result.media_formats.tinygif.url)}
-                  className="group relative aspect-square bg-white/5 rounded-xl overflow-hidden border border-editor-border hover:border-editor-accent transition-all duration-300"
+                  className="group relative aspect-square bg-bg-surface rounded-xl overflow-hidden border border-border hover:border-editor-accent transition-all duration-300"
                 >
                   <img
                     src={result.media_formats.tinygif.url}
@@ -216,7 +216,7 @@ export function StickerPanel() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="flex flex-col items-center justify-center h-40 text-neutral-500 gap-3 text-center px-4"
+              className="flex flex-col items-center justify-center h-40 text-text-muted gap-3 text-center px-4"
             >
               <Ghost className="w-8 h-8 opacity-20" />
               <p className="text-[10px] uppercase tracking-widest font-bold leading-relaxed">
@@ -227,8 +227,8 @@ export function StickerPanel() {
         </AnimatePresence>
       </div>
 
-      <div className="pt-4 border-t border-editor-border">
-        <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.2em] font-bold text-neutral-600">
+      <div className="pt-4 border-t border-border">
+        <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.2em] font-bold text-text-muted">
           <img src="https://tenor.com/assets/img/tenor-logo-white.svg" alt="Tenor" className="h-2.5 opacity-30" />
           <span>Powered by Google</span>
         </div>

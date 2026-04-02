@@ -161,7 +161,7 @@ export function SidebarRight() {
   }));
 
   return (
-    <div className="w-80 bg-editor-sidebar border-l border-editor-border flex flex-col h-full text-neutral-200 relative overflow-hidden">
+    <div className="w-80 bg-bg-panel border-l border-border flex flex-col h-full text-text-primary relative overflow-hidden">
       {/* Winter Background Effect */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-900/5 via-transparent to-blue-900/5 pointer-events-none" />
       
@@ -193,14 +193,14 @@ export function SidebarRight() {
         ))}
       </div>
 
-      <div className="p-4 border-b border-editor-border flex justify-between items-center h-14 relative z-10">
+      <div className="p-4 border-b border-border flex justify-between items-center h-14 relative z-10">
         <div className="flex gap-4 overflow-x-auto no-scrollbar py-1 flex-1">
           {(['filters', 'layers', 'history'] as const).map((tab) => (
             <button 
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={`text-[10px] uppercase tracking-widest font-bold transition-all relative py-1 ${
-                activeTab === tab ? 'text-white' : 'text-neutral-500 hover:text-neutral-300'
+                activeTab === tab ? 'text-text-primary' : 'text-text-muted hover:text-text-primary'
               }`}
             >
               <span className="flex items-center gap-1.5">
@@ -224,10 +224,10 @@ export function SidebarRight() {
               setSelectedCategory('Custom');
               setIsCreating(true);
             }}
-            className="p-1.5 bg-white/5 hover:bg-white/10 rounded-md border border-editor-border transition-colors"
+            className="p-1.5 bg-bg-surface hover:bg-bg-surface-hover rounded-md border border-border transition-colors"
             title="Create Custom Filter"
           >
-            <Plus className="w-3.5 h-3.5 text-neutral-400" />
+            <Plus className="w-3.5 h-3.5 text-text-muted" />
           </button>
         )}
       </div>
@@ -261,16 +261,16 @@ export function SidebarRight() {
                       className={`p-3 rounded-lg border transition-all cursor-pointer ${
                         index === historyIndex 
                           ? 'bg-editor-accent/10 border-editor-accent' 
-                          : 'bg-white/5 border-transparent hover:border-white/10'
+                          : 'bg-bg-surface border-transparent hover:border-border'
                       }`}
                       onClick={() => jumpToHistory(index)}
                     >
                       <div className="flex justify-between items-center">
                         <div className="flex flex-col">
-                          <span className={`text-[11px] font-bold uppercase tracking-wider ${index === historyIndex ? 'text-white' : 'text-neutral-400'}`}>
+                          <span className={`text-[11px] font-bold uppercase tracking-wider ${index === historyIndex ? 'text-text-primary' : 'text-text-muted'}`}>
                             {item.actionName}
                           </span>
-                          <span className="text-[9px] text-neutral-600 font-mono">
+                          <span className="text-[9px] text-text-muted font-mono">
                             {new Date(item.timestamp).toLocaleTimeString()}
                           </span>
                         </div>
@@ -292,14 +292,14 @@ export function SidebarRight() {
                     onMouseLeave={handleMouseLeave}
                     onMouseUp={handleMouseUp}
                     onMouseMove={handleMouseMove}
-                    className={`flex overflow-x-auto border-b border-editor-border bg-black/20 scroll-smooth category-scrollbar pb-1 ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
+                    className={`flex overflow-x-auto border-b border-border bg-bg-surface scroll-smooth category-scrollbar pb-1 ${isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'}`}
                   >
                     {CATEGORIES.map(cat => (
                       <button
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
                         className={`whitespace-nowrap px-5 py-3.5 text-[10px] uppercase tracking-wider font-bold transition-all duration-300 relative ${
-                          selectedCategory === cat ? 'text-editor-accent' : 'text-neutral-500 hover:text-neutral-300'
+                          selectedCategory === cat ? 'text-editor-accent' : 'text-text-muted hover:text-text-primary'
                         }`}
                       >
                         {cat}
@@ -321,20 +321,20 @@ export function SidebarRight() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
-                        className="bg-white/5 border border-editor-border p-4 rounded-xl space-y-4"
+                        className="bg-bg-surface border border-border p-4 rounded-xl space-y-4"
                       >
-                        <h3 className="text-[11px] uppercase tracking-wider font-bold text-white">Save Preset</h3>
+                        <h3 className="text-[11px] uppercase tracking-wider font-bold text-text-primary">Save Preset</h3>
                         <input
                           type="text"
                           value={newFilterName}
                           onChange={(e) => setNewFilterName(e.target.value)}
                           placeholder="Filter Name"
-                          className="w-full bg-black/40 border border-editor-border rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-editor-accent transition-colors"
+                          className="w-full bg-bg-surface border border-border rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-editor-accent transition-colors"
                         />
                         <div className="flex gap-2">
                           <button
                             onClick={() => setIsCreating(false)}
-                            className="flex-1 py-2 text-[10px] uppercase tracking-wider font-bold text-neutral-400 hover:text-white bg-black/20 rounded-lg border border-editor-border transition-colors"
+                            className="flex-1 py-2 text-[10px] uppercase tracking-wider font-bold text-text-muted hover:text-text-primary bg-bg-surface rounded-lg border border-border transition-colors"
                           >
                             Cancel
                           </button>
@@ -370,18 +370,18 @@ export function SidebarRight() {
                             exit={{ opacity: 0, scale: 0.95 }}
                             transition={{ delay: index * 0.03 }}
                             className={`relative rounded-xl border p-3 cursor-pointer transition-all duration-300 ${
-                              isActive ? 'border-editor-accent bg-editor-accent/5' : 'border-editor-border bg-white/5 hover:border-neutral-700'
+                              isActive ? 'border-editor-accent bg-editor-accent/5' : 'border-border bg-bg-surface hover:border-text-muted'
                             }`}
                             onClick={() => setActiveFilter(isActive ? null : filter.id)}
                           >
                             <div className="flex items-center justify-between mb-3">
-                              <span className={`text-[11px] font-bold uppercase tracking-wider ${isActive ? 'text-editor-accent' : 'text-neutral-300'}`}>
+                              <span className={`text-[11px] font-bold uppercase tracking-wider ${isActive ? 'text-editor-accent' : 'text-text-primary'}`}>
                                 {filter.name}
                               </span>
                               {isActive && <Check className="w-3.5 h-3.5 text-editor-accent" />}
                             </div>
                             
-                            <div className="h-24 bg-black/40 rounded-lg mb-3 overflow-hidden relative group">
+                            <div className="h-24 bg-bg-surface rounded-lg mb-3 overflow-hidden relative group">
                               <img 
                                 src={`https://picsum.photos/seed/${filter.id}/300/200`} 
                                 alt={filter.name}
@@ -390,7 +390,7 @@ export function SidebarRight() {
                                 referrerPolicy="no-referrer"
                                 loading="lazy"
                               />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
+                              <div className="absolute inset-0 bg-gradient-to-t from-bg-main/80 via-transparent to-transparent opacity-60" />
                               <div className="absolute bottom-2 left-2 flex items-center gap-1.5">
                                 <div className="w-1.5 h-1.5 bg-editor-accent rounded-full animate-pulse" />
                                 <span className="text-[8px] text-white/50 uppercase tracking-widest font-bold">Live Preview</span>
@@ -407,8 +407,8 @@ export function SidebarRight() {
                                   onClick={(e) => e.stopPropagation()}
                                 >
                                   <div className="flex justify-between text-[10px] font-bold uppercase tracking-wider">
-                                    <span className="text-neutral-500">Intensity</span>
-                                    <span className="text-white font-mono">{Math.round(filterIntensity * 100)}%</span>
+                                    <span className="text-text-muted">Intensity</span>
+                                    <span className="text-text-primary font-mono">{Math.round(filterIntensity * 100)}%</span>
                                   </div>
                                   <input
                                     type="range"
@@ -419,7 +419,7 @@ export function SidebarRight() {
                                     onChange={(e) => setFilterIntensity(parseFloat(e.target.value))}
                                     onMouseUp={() => useEditorStore.getState().saveHistory()}
                                     onTouchEnd={() => useEditorStore.getState().saveHistory()}
-                                    className="w-full h-1 bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-editor-accent"
+                                    className="w-full h-1 bg-bg-surface-hover rounded-lg appearance-none cursor-pointer accent-editor-accent"
                                     disabled={!image}
                                   />
                                 </motion.div>

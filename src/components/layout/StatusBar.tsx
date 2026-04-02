@@ -31,7 +31,7 @@ export function StatusBar() {
   };
 
   return (
-    <div className="h-8 bg-editor-sidebar border-t border-editor-border flex items-center justify-between px-4 text-[10px] uppercase tracking-widest font-bold text-neutral-500 relative z-20">
+    <div className="h-8 bg-bg-panel border-t border-border flex items-center justify-between px-4 text-[10px] uppercase tracking-widest font-bold text-text-muted relative z-20">
       <div className="flex items-center gap-6">
         <motion.div 
           initial={{ opacity: 0 }}
@@ -56,12 +56,12 @@ export function StatusBar() {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center gap-2"
           >
-            <span className="text-neutral-700">|</span>
+            <span className="text-border">|</span>
             <span>{Math.round(image.width! * image.scaleX!)} x {Math.round(image.height! * image.scaleY!)} px</span>
           </motion.div>
         )}
         <div className="flex items-center gap-2">
-          <span className="text-neutral-700">|</span>
+          <span className="text-border">|</span>
           <Layers size={12} className="text-editor-accent-green" />
           <AnimatePresence mode="wait">
             <motion.span
@@ -107,7 +107,7 @@ export function StatusBar() {
           </div>
           <button 
             onClick={resetZoom}
-            className="hover:text-white transition-colors flex items-center gap-1"
+            className="hover:text-text-primary transition-colors flex items-center gap-1"
           >
             <Maximize size={12} />
             Reset View
